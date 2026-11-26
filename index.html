@@ -2,7 +2,7 @@
 <html lang="ru" data-theme="light" class="no-js">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Утренние и вечерние азкары — 28 достоверных зикров: арабский текст, транслитерация, перевод</title>
 <meta name="description" content="Утренние и вечерние азкары (адкар ас-сабах ва-ль-маса): 28 зикров из достоверных хадисов — арабский текст, транслитерация, перевод, время, число повторов, награда, источник и проверка аль-Альбани. Дневной трекер, поиск, тёмная тема.">
 <meta name="keywords" content="азкары, адкар ас-сабах, адкар аль-маса, утренние азкары, вечерние азкары, зикр, дуа, Аят аль-Курси, Сайид аль-истигфар, Тасбих Фатимы">
@@ -42,7 +42,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" media="print" onload="this.media='all'"
-      href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Manrope:wght@400;500;600;700;800&family=Noto+Naskh+Arabic:wght@400;600&display=swap">
+      href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Manrope:wght@400;500;600;700;800&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap">
 
 <script type="application/ld+json" id="ld">
 {
@@ -101,7 +101,8 @@ body{
   color:var(--ink);background:var(--bg);
   background-image:radial-gradient(900px 500px at 85% -5%,rgba(217,178,90,.10),transparent 60%),
                    radial-gradient(800px 600px at -10% 40%,rgba(29,138,99,.08),transparent 60%);
-  background-attachment:fixed;
+  background-repeat:no-repeat;
+  overflow-x:clip; /* страховка от случайного горизонтального скролла */
   transition:background-color .3s,color .3s;
 }
 img,svg{max-width:100%}
@@ -167,7 +168,11 @@ a{color:var(--green);text-underline-offset:3px}
   background:radial-gradient(circle,rgba(217,178,90,.32),transparent 62%)}
 .hero__inner{display:grid;gap:2.2rem;justify-items:center;text-align:center}
 .bismillah{font-family:var(--ff-ar);font-size:clamp(1.3rem,3vw,1.7rem);color:var(--gold-l);margin:0;opacity:.95}
-.hero__ar{font-family:var(--ff-ar);font-weight:700;font-size:clamp(2.8rem,9vw,5.6rem);line-height:1.35;margin:0;color:#f0d38c;
+.hero__ar{font-family:var(--ff-ar);font-weight:700;font-size:clamp(2.4rem,8vw,5.2rem);
+  /* У арабских шрифтов (Amiri и др.) вертикальные выносы и диакритика выходят за em-квадрат:
+     запас в line-height + padding, иначе background-clip:text обрежет края глифов */
+  line-height:1.8;letter-spacing:0;text-wrap:balance;max-inline-size:100%;
+  margin:0;padding:.08em .22em .14em;color:#f0d38c;
   background:linear-gradient(180deg,#fff1c2,#d9b25a 70%,#b98a2e);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .hero h1{font-size:clamp(1.9rem,5vw,3.3rem);line-height:1.15;margin:0;font-weight:800;letter-spacing:-.01em}
 .hero__lead{max-width:62ch;margin:0 auto;color:rgba(245,239,217,.86);font-size:clamp(1rem,2vw,1.15rem)}
@@ -313,10 +318,14 @@ td.t-src{color:var(--muted);font-size:.86rem}
 .toast{position:fixed;left:50%;bottom:1.4rem;transform:translate(-50%,30px);opacity:0;z-index:300;background:var(--green-d);color:#f5efd9;padding:.7rem 1.2rem;border-radius:14px;font-weight:600;box-shadow:var(--shadow-h);border:1px solid rgba(217,178,90,.4);transition:opacity .25s,transform .25s;pointer-events:none}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 
-/* ========== Scroll-reveal ========== */
-.js .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.7,.2,1) var(--d,0ms),transform .7s cubic-bezier(.2,.7,.2,1) var(--d,0ms)}
-.js .reveal.in{opacity:1;transform:none}
-.js .card.reveal.in:hover{transform:translateY(-3px)}
+/* ========== Scroll-reveal ==========
+   Только десктоп с мышью: на тач-устройствах контент никогда не скрывается,
+   иначе при быстром свайпе видны «пустые» блоки (ощущение подгрузки) */
+@media (hover:hover) and (pointer:fine) and (min-width:861px){
+  .js .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.7,.2,1) var(--d,0ms),transform .7s cubic-bezier(.2,.7,.2,1) var(--d,0ms)}
+  .js .reveal.in{opacity:1;transform:none}
+  .js .card.reveal.in:hover{transform:translateY(-3px)}
+}
 
 /* ========== Адаптив ========== */
 @media (max-width:1020px){
@@ -325,6 +334,9 @@ td.t-src{color:var(--muted);font-size:.86rem}
 }
 @media (max-width:860px){
   html{scroll-padding-top:150px}
+  /* backdrop-filter дорог для мобильного GPU во время скролла — непрозрачный фон вместо блюра */
+  .site-header{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--bg)}
+  .stat{-webkit-backdrop-filter:none;backdrop-filter:none}
   .site-header .wrap{gap:.5rem}
   .nav{order:3;flex:1 0 100%;margin:0;padding-bottom:.15rem}
   .tools{margin-left:auto}
@@ -353,6 +365,17 @@ td.t-src{color:var(--muted);font-size:.86rem}
   .seg{width:100%}
   .seg button{flex:1;justify-content:center;padding-inline:.4rem}
 }
+@media (pointer:coarse){
+  .icon-btn{min-width:44px;height:44px}
+  .nav a{padding:.62rem .95rem}
+  .read-btn,.copy-btn,.seg button{min-height:44px}
+}
+/* Safe-area для iPhone с челкой/индикатором (viewport-fit=cover) */
+@supports (padding:max(0px)){
+  .wrap{padding-left:max(0px,env(safe-area-inset-left));padding-right:max(0px,env(safe-area-inset-right))}
+  .toast{bottom:calc(1.4rem + env(safe-area-inset-bottom,0px))}
+  .site-footer{padding-bottom:calc(3rem + env(safe-area-inset-bottom,0px))}
+}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
@@ -360,6 +383,7 @@ td.t-src{color:var(--muted);font-size:.86rem}
 }
 @media print{
   .site-header,.read-progress,.toolbar,.tracker,.hero__cta,.card__foot,.read-btn,.toast{display:none!important}
+  .reveal{opacity:1!important;transform:none!important}
   body{background:#fff;color:#000}
   .card,.note,.panel{box-shadow:none;break-inside:avoid}
   .hero{background:#fff;color:#000;border-radius:0}
@@ -985,8 +1009,9 @@ function rowHTML(z){
   </tr>`;
 }
 
-/* Reveal */
-const io = ('IntersectionObserver' in window && !reduce)
+/* Reveal — та же среда, что и в CSS: десктоп с мышью, без reduced-motion */
+const fancy = !reduce && !!(window.matchMedia && matchMedia('(hover:hover) and (pointer:fine) and (min-width:861px)').matches);
+const io = (fancy && 'IntersectionObserver' in window)
   ? new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }),{threshold:.08,rootMargin:'0px 0px -4% 0px'})
   : null;
 const observe = el => io ? io.observe(el) : el.classList.add('in');
@@ -1130,7 +1155,12 @@ window.addEventListener('scroll',onScroll,{passive:true}); window.addEventListen
 if('IntersectionObserver' in window){
   const links=$$('#nav a'), map=new Map(links.map(a=>[a.getAttribute('href').slice(1),a]));
   const so=new IntersectionObserver(es=>es.forEach(e=>{
-    if(e.isIntersecting){ links.forEach(l=>l.removeAttribute('aria-current')); const a=map.get(e.target.id); if(a){ a.setAttribute('aria-current','true'); if(a.scrollIntoView && window.innerWidth<860) a.scrollIntoView({block:'nearest',inline:'center',behavior:'auto'}); } }
+    if(e.isIntersecting){ links.forEach(l=>l.removeAttribute('aria-current')); const a=map.get(e.target.id); if(a){ a.setAttribute('aria-current','true');
+      /* Прокручиваем только ленту навигации по горизонтали: scrollIntoView
+         может дёрнуть вертикальный скролл страницы и перехватить жест */
+      const nv=a.closest('.nav');
+      if(nv && window.innerWidth<860) nv.scrollLeft = a.offsetLeft - (nv.clientWidth - a.offsetWidth)/2;
+    } }
   }),{rootMargin:'-35% 0px -60% 0px'});
   map.forEach((_,id)=>{ const s=document.getElementById(id); if(s) so.observe(s); });
 }
@@ -1139,7 +1169,7 @@ if('IntersectionObserver' in window){
 const targets={ 'st-total':TOTAL, 'st-morning':DATA.filter(z=>z.period==='morning').length, 'st-evening':DATA.filter(z=>z.period==='evening').length };
 Object.keys(targets).forEach(id=>{
   const el=$('#'+id), to=targets[id];
-  if(reduce){ el.textContent=to; return; }
+  if(!fancy){ el.textContent=to; return; }
   const t0=performance.now(), dur=1100;
   el.textContent='0';
   (function step(t){
